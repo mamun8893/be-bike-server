@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 var cors = require("cors");
 const { MongoClient } = require("mongodb");
+const ObjectId = require("mongodb").ObjectId;
 require("dotenv").config();
 const port = 5000;
 
@@ -20,6 +21,7 @@ async function run() {
     const database = client.db("be-bike");
     const productCollection = database.collection("product");
     const usersCollection = database.collection("users");
+    const orderCollection = database.collection("orders");
 
     // app.get("/appointment", async (req, res) => {
     //   const email = req.query.email;
@@ -38,7 +40,7 @@ async function run() {
 
     //Add Product API
 
-    app.post("/products", async (req, res) => {
+    app.post("/bikes", async (req, res) => {
       const products = req.body;
       const result = await productCollection.insertOne(products);
       res.json(result);
@@ -46,7 +48,7 @@ async function run() {
 
     //Get Product API
 
-    app.get("/products", async (req, res) => {
+    app.get("/bikes", async (req, res) => {
       const cursor = productCollection.find({});
       const result = await cursor.toArray();
       res.send(result);
@@ -57,6 +59,41 @@ async function run() {
     app.post("/users", async (req, res) => {
       const user = req.body;
       const result = await usersCollection.insertOne(user);
+      res.json(result);
+    });
+
+    //Get Single Product API
+
+    app.get("/bikes/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const bike = await productCollection.findOne(query);
+      res.send(bike);
+    });
+
+    //Pace Order API
+
+    app.post("/place-order", async (req, res) => {
+      const order = req.body;
+      const result = await orderCollection.insertOne(order);
+      res.send(result);
+    });
+
+    //Get My Order API
+
+    app.get("/myOrders/:email", async (req, res) => {
+      const userEmail = req.params.email;
+      const myOrder = orderCollection.find({ email: userEmail });
+      const result = await myOrder.toArray();
+      res.json(result);
+    });
+
+    //Order Delete
+
+    app.delete("/orderDelete/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await orderCollection.deleteOne(query);
       res.json(result);
     });
 
