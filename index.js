@@ -22,6 +22,7 @@ async function run() {
     const productCollection = database.collection("product");
     const usersCollection = database.collection("users");
     const orderCollection = database.collection("orders");
+    const reviewCollection = database.collection("review");
 
     // app.get("/appointment", async (req, res) => {
     //   const email = req.query.email;
@@ -132,6 +133,50 @@ async function run() {
         isAdmin = true;
       }
       res.json({ admin: isAdmin });
+    });
+
+    //Review Api
+
+    app.post("/review", async (req, res) => {
+      const review = req.body;
+      const result = await reviewCollection.insertOne(review);
+      res.send(result);
+    });
+
+    //Get Review API
+
+    app.get("/review", async (req, res) => {
+      const cursor = reviewCollection.find({});
+      const result = await cursor.toArray();
+      res.json(result);
+    });
+
+    //Get All Order API
+
+    app.get("/all-order", async (req, res) => {
+      const cursor = orderCollection.find({});
+      const result = await cursor.toArray();
+      res.json(result);
+    });
+
+    //Update Status API
+
+    app.put("/update-status/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          status: true,
+        },
+      };
+      const result = await orderCollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
+
+      res.json(result);
     });
   } finally {
     // await client.close();
