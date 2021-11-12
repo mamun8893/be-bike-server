@@ -72,7 +72,7 @@ async function run() {
       res.send(bike);
     });
 
-    //Pace Order API
+    //Place Order API
 
     app.post("/place-order", async (req, res) => {
       const order = req.body;
@@ -98,18 +98,14 @@ async function run() {
       res.json(result);
     });
 
-    // app.put("/users", async (req, res) => {
-    //   const user = req.body;
-    //   const filter = { email: user.email };
-    //   const options = { upsert: true };
-    //   const updateDoc = { $set: user };
-    //   const result = await usersCollection.updateOne(
-    //     filter,
-    //     updateDoc,
-    //     options
-    //   );
-    //   res.json(result);
-    // });
+    //Product Delete
+
+    app.delete("/productDelete/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await productCollection.deleteOne(query);
+      res.json(result);
+    });
 
     //Set Admin Role API
 
