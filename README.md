@@ -6,8 +6,9 @@ It is a server made with node, express,mongodb
 
 - It is a Bike Purchase Server
 - Product Add, delete,manage API
-- User Manage API
+- User Role Manage API
 - Order manage API
+- Order Status Update API
 
 ## Live Demo of this website :
 
