@@ -24,21 +24,6 @@ async function run() {
     const orderCollection = database.collection("orders");
     const reviewCollection = database.collection("review");
 
-    // app.get("/appointment", async (req, res) => {
-    //   const email = req.query.email;
-    //   const date = new Date(req.query.date).toLocaleDateString();
-    //   const query = { email: email, date: date }; //jaita diye find korbo saita dite hobe akahne email diye korse
-
-    //   const cursor = appointmentCollection.find(query);
-    //   const appointment = await cursor.toArray();
-    //   res.send(appointment);
-    // });
-    // app.post("/appointment", async (req, res) => {
-    //   const appointment = req.body;
-    //   const result = await appointmentCollection.insertOne(appointment);
-    //   res.json(result);
-    // });
-
     //Add Product API
 
     app.post("/bikes", async (req, res) => {
